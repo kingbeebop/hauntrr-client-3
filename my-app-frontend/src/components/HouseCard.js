@@ -17,6 +17,7 @@ function HouseCard({ house, onClick }){
             <img src={house.picUrl}/>
             <span>{house.location}</span>
             <span>{house.description}</span>
+            <button onClick={handleClick}>Select</button>
 
         </div>
     )

@@ -8,7 +8,7 @@ function App() {
 
   const [houses, setHouses] = useState([])
   const [ghosts, setGhosts] = useState([])
-  const [currentGhost, setCurrentGhost] = useState({})
+  const [currentGhost, setCurrentGhost] = useState(false)
 
   // let hauntingDisplay = <div>Select a ghost:</div>
 
@@ -23,6 +23,8 @@ function App() {
     .then(res=>res.json())
     .then(data=>setGhosts(data))
   },[])
+
+
 
   // useEffect(()=>{
   //   console.log("triggered")
@@ -55,10 +57,13 @@ function App() {
   }
 
   function exitHauntings(){
-    setCurrentGhost({})
+    setCurrentGhost(false)
   }
 
 
+  function resetGhost(ghost){
+    setCurrentGhost(ghost)
+  }
 
 
   return (
@@ -66,7 +71,8 @@ function App() {
       <div id='hauntings'>
         <GhostPage ghost={currentGhost}
         houses={houses}
-        onExit={exitHauntings}/>
+        onExit={exitHauntings}
+        resetGhost={resetGhost}/>
         </div>
       {ghosts.map(ghost => {
         return(<GhostCard key={ghost.id}
