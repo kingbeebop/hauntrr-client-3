@@ -12,15 +12,39 @@ function GhostPage( { ghost, houses, onExit, resetGhost }){
     // let content = <div>Select ghost:</div>
 
     let content = getContent()
+
+    useEffect(()=>{
+        console.log(ghost.houses)
+        setHauntings(ghost.houses)
+    },[])
+
+    // useEffect(()=>{
+    //     fetch("http://localhost:9292/hauntings")
+    //     .then(res=>res.json())
+    //     .then(data=>{
+    //         console.log(data)
+    //         renderHauntings(data)
+    //     })
+    // },[])
+
+    // function renderHauntings(data){
+    //     setHauntings(houses.filter(house=>{
+    //         if(data.house_id===house.id && data.ghost_id===ghost.id){
+    //             return true
+    //         }
+    //         else{
+    //             return false
+    //         }
+    //     }))
+    // }
     
     function getContent() {
-        console.log(ghost)
         if(ghost){
         return (<div>
         <button onClick={onExit}>Exit</button>
         <div>
             <h1>Current Hauntings</h1>
-            {hauntings.map(house=><HouseCard house={house} onClick={removeHaunting}/>)}
+            {ghost.houses.map(house=><HouseCard key={house.id} house={house} onClick={removeHaunting}/>)}
         </div>
         <div>
             <h1>Available Houses</h1>
@@ -42,27 +66,28 @@ function GhostPage( { ghost, houses, onExit, resetGhost }){
     // },[ghost])
 
     function addHaunting(house){
-        fetch("http://localhost:9292/hauntings",{
+        fetch("http://localhost:9292/haunting",{
             method: "POST",
-            headers: {"ContentType":"application/json"},
-            body: {"ghost_id":ghost.id, "house_id":house.id}
-        }).then(res=>res.json())
-        .then(
-            fetch(`http://localhost:9292/ghosts/${ghost.id}`)
-            .then(res=>res.json())
-            .then(data=>resetGhost(data))
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({ghost_id: ghost.id, house_id: house.id})
+        })
+        .then(res=>res.json())
+        .then(data=>setHauntings({...hauntings, data})
         )
     }
 
     function removeHaunting(haunting){
         fetch(`http://localhost:9292/hauntings/${haunting.id}`,{
             method: "DELETE",
-            headers: {"ContentType":"application/json"}
+            headers: {"Content-Type":"application/json"}
         }).then(res=>res.json())
-        .then(
-            fetch(`http://localhost:9292/ghosts/${ghost.id}`)
-            .then(res=>res.json())
-            .then(data=>resetGhost(data))
+        .then(data=> setHauntings(ghost.houses.filter(haunting=>{
+            if(haunting.id === data.id){
+                return false
+            } else {
+                return true
+            }
+        }))
         )
     }
 

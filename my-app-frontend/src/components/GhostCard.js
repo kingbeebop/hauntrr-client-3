@@ -9,7 +9,7 @@ function GhostCard({ ghost, onSelect, onDelete }){
     }
 
     function handleClick(){
-        console.log(ghost)
+        // console.log(ghost)
         onSelect(ghost)
     }
 
