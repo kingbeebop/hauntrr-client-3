@@ -1,15 +1,16 @@
 // import { Card, Image } from "semantic-ui-react";
 
-function GhostCard({ ghost, onClick, onDelete }){
+function GhostCard({ ghost, onSelect, onDelete }){
 
-    console.log(ghost)
+    // console.log(ghost)
 
     function handleDelete(){
         onDelete(ghost)
     }
 
     function handleClick(){
-        onClick(ghost)
+        console.log(ghost)
+        onSelect(ghost)
     }
 
     return(
@@ -19,10 +20,11 @@ function GhostCard({ ghost, onClick, onDelete }){
         //         <Card.Header>{ghost.name}</Card.Header>
         //     </Card.Content>
         // </Card>
-        <div onClick={handleClick}>
+        <div>
             <button onClick={handleDelete}>X</button>
             <span>{ghost.name}</span>
             <img src={ghost.picUrl}/>
+            <button onClick={handleClick}>Select</button>
         </div>
     )
 }

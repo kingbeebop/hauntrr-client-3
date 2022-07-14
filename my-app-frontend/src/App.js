@@ -10,7 +10,7 @@ function App() {
   const [ghosts, setGhosts] = useState([])
   const [currentGhost, setCurrentGhost] = useState({})
 
-  let hauntings
+  // let hauntingDisplay = <div>Select a ghost:</div>
 
   useEffect(()=>{
     fetch("http://localhost:9292/houses")
@@ -23,6 +23,17 @@ function App() {
     .then(res=>res.json())
     .then(data=>setGhosts(data))
   },[])
+
+  // useEffect(()=>{
+  //   console.log("triggered")
+  //   console.log(currentGhost)
+  //   if(currentGhost){
+  //     console.log("working")
+  //     hauntingDisplay = <GhostPage ghost={currentGhost} houses={houses} onExit={handleExitHaunting}/>
+  //   }else{
+  //     hauntingDisplay = <div>Select a ghost:</div>
+  //   }
+  // },[currentGhost])
 
   // function reloadGhosts(){
   //   fetch("http://localhost:9292/ghosts")
@@ -41,16 +52,26 @@ function App() {
 
   function handleClickGhost(ghost){
     setCurrentGhost(ghost)
-    hauntings = <GhostPage ghost={ghost} houses={houses}/>
   }
+
+  function exitHauntings(){
+    setCurrentGhost({})
+  }
+
+
+
 
   return (
     <div>
-      {hauntings}
+      <div id='hauntings'>
+        <GhostPage ghost={currentGhost}
+        houses={houses}
+        onExit={exitHauntings}/>
+        </div>
       {ghosts.map(ghost => {
         return(<GhostCard key={ghost.id}
         ghost = {ghost}
-        onClick = {handleClickGhost}
+        onSelect = {handleClickGhost}
         onDelete = {handleDeleteGhost}/>)
       })}
     </div>
