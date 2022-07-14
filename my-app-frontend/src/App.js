@@ -20,13 +20,32 @@ function App() {
     .then(data=>setGhosts(data))
   },[])
 
+  function reloadGhosts(){
+    fetch("http://localhost:9292/ghosts")
+    .then(res=>res.json())
+    .then(data=>setGhosts(data))
+  }
 
+
+  function handleDeleteGhost(ghost){
+    fetch(`http://localhost:9292/ghosts/${ghost.id}`,{
+      method: "DELETE",
+      headers: {"ContentType":'applicaton/json'}
+    })
+    .then(reloadGhosts())
+  }
+
+  function handleClickGhost(ghost){
+
+  }
 
   return (
     <div>
       {ghosts.map(ghost => {
         return(<GhostCard key={ghost.id}
-        ghost = {ghost} />)
+        ghost = {ghost}
+        onClick = {handleClickGhost}
+        onDelete = {handleDeleteGhost}/>)
       })}
     </div>
   );
