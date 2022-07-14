@@ -76,13 +76,14 @@ function GhostPage( { ghost, houses, onExit, resetGhost }){
         )
     }
 
-    function removeHaunting(haunting){
+    function removeHaunting(house){
+        let haunting = ghost.hauntings.find(temp=>{if(temp.id === house.id){return true}})
         fetch(`http://localhost:9292/hauntings/${haunting.id}`,{
             method: "DELETE",
             headers: {"Content-Type":"application/json"}
         }).then(res=>res.json())
-        .then(data=> setHauntings(ghost.houses.filter(haunting=>{
-            if(haunting.id === data.id){
+        .then(data=> setHauntings(ghost.houses.filter(temp=>{
+            if(temp.id === data.id){
                 return false
             } else {
                 return true
@@ -90,6 +91,8 @@ function GhostPage( { ghost, houses, onExit, resetGhost }){
         }))
         )
     }
+    
+    //I GIVE UP ;(
 
     // function updateContent(){
     //     if(ghost){
